@@ -28,7 +28,7 @@ class TradeSpec extends Spec with ShouldMatchers {
 
       (((trd1 map forTrade) map taxFees) map enrichWith) should equal(Some(RichTrade(Trade("a-123","google","r-123",HongKong,12.25,200),Map(TradeTax -> 490.000, Commission -> 367.5000))))
 
-      ((((trd1 map forTrade) map taxFees) map enrichWith) map netAmount) should equal(Some(3307.5000))
+      ((((trd1 map forTrade) ∘ taxFees) ∘ enrichWith) ∘ netAmount) should equal(Some(3307.5000))
     }
 
     it("should create and operate on multiple trades") {
