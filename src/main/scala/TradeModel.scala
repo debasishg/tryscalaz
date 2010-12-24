@@ -1,31 +1,21 @@
 package net.debasishg.domain.trade.dsl
 
+/**
+ * Created by IntelliJ IDEA.
+ * User: debasish
+ * Date: 23/12/10
+ * Time: 6:06 PM
+ * To change this template use File | Settings | File Templates.
+ */
+
 import scalaz._
 import Scalaz._
 
-object Trades {
-  type Instrument = String
-  type Account = String
-  type NetAmount = BigDecimal
+trait TradeModel {this: RefModel =>
 
   // the main domain class
-  case class Trade(account: Account, instrument: Instrument, refNo: String, market: Market, 
+  case class Trade(account: Account, instrument: Instrument, refNo: String, market: Market,
     unitPrice: BigDecimal, quantity: BigDecimal)
-
-  sealed trait Market
-  case object HongKong extends Market
-  case object Singapore extends Market
-  case object NewYork extends Market
-  case object Tokyo extends Market
-  case object Other extends Market
-
-  def makeMarket(m: String) = m match {
-    case "HongKong" => HongKong
-    case "Singapore" => Singapore
-    case "NewYork" => NewYork
-    case "Tokyo" => Tokyo
-    case _ => Other
-  }
 
   // various tax/fees to be paid when u do a trade
   sealed trait TaxFeeId
@@ -56,7 +46,7 @@ object Trades {
   }}
 
   // validate quantity
-  def validQuantity(qty: BigDecimal): Validation[String, BigDecimal] = 
+  def validQuantity(qty: BigDecimal): Validation[String, BigDecimal] =
     try {
       if (qty <= 0) "qty must be > 0".fail
       else if (qty > 500) "qty must be <= 500".fail
@@ -66,7 +56,7 @@ object Trades {
     }
 
   // validate unit price
-  def validUnitPrice(price: BigDecimal): Validation[String, BigDecimal] = 
+  def validUnitPrice(price: BigDecimal): Validation[String, BigDecimal] =
     try {
       if (price <= 0) "price must be > 0".fail
       else if (price > 100) "price must be <= 100".fail
@@ -75,28 +65,16 @@ object Trades {
       case e => e.toString.fail
     }
 
-  def makeTrade(account: Account, instrument: Instrument, refNo: String, market: Market, 
+  // using Validation as an applicative
+  // can be combined to accumulate exceptions
+  def makeTrade(account: Account, instrument: Instrument, refNo: String, market: Market,
     unitPrice: BigDecimal, quantity: BigDecimal) =
-    (validUnitPrice(unitPrice).liftFailNel |@| 
+    (validUnitPrice(unitPrice).liftFailNel |@|
       validQuantity(quantity).liftFailNel) { (u, q) => Trade(account, instrument, refNo, market, u, q) }
 
-  def makeTrade(m: Map[String, String]): Option[Trade] =
-    m.get("account") |@| 
-      m.get("instrument") |@| 
-        m.get("refNo") |@| 
-          (m.get("market") map (makeMarket(_))) |@| 
-            (m.get("unitPrice") map (BigDecimal(_))) |@| 
-              (m.get("quantity") map (BigDecimal(_))) apply Trade.apply
-
-  val enrichTradeWith: Trade => List[(TaxFeeId, BigDecimal)] => BigDecimal = {trade => {taxes => 
+  val enrichTradeWith: Trade => List[(TaxFeeId, BigDecimal)] => BigDecimal = {trade => {taxes =>
     taxes.foldLeft(principal(trade))((a, b) => a + b._2)
   }}
-
-  // Reader monad
-  val lifecycle = for {
-    taxFeeIds <- forTrade // get the tax/fee ids for a trade
-    taxFeeValues <- taxFeeCalculate // calculate tax fee values
-    netAmount <- enrichTradeWith // enrich trade with net amount
-  }
-  yield((taxFeeIds ∘ taxFeeValues) ∘ netAmount)
 }
+
+object TradeModel extends TradeModel with ExecutionModel with OrderModel with RefModel
