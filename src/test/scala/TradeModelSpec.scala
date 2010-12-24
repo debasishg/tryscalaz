@@ -23,6 +23,7 @@ class TradeModelSpec extends Spec with ShouldMatchers {
 
       (trd1 ∘ lifecycle) should equal(Some(Some(3307.5000)))
       (List(trd1, trd2) ∘∘ lifecycle) should equal (List(Some(Some(3307.5000)), Some(Some(8845.0000))))
+      (Seq(trd1, trd2).sequence ∘∘ lifecycle) should equal (Some(List(Some(3307.5000), Some(8845.0000))))
     }
   }
 }
