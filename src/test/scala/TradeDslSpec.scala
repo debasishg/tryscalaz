@@ -44,11 +44,13 @@ class TradeDslSpec extends Spec with ShouldMatchers {
       import TradeModel._
       import TradeDsl._
 
-      val l1 = LineItem("goog", 100, 65.5)
-      val l2 = LineItem("ibm", 300, 35.5)
-      val ord = Order("o-123", java.util.Calendar.getInstance.getTime, List(l1, l2))
-      val trades = tradeGeneration(NewYork, "b-123", List("c1-123", "c2-123"))(ord)
-      trades.size should equal(4)
+      val clientOrders = List(
+        Map("no" -> "o-123", "customer" -> "chase", "instrument" -> "goog/100/30-ibm/200/12"),
+        Map("no" -> "o-124", "customer" -> "nomura", "instrument" -> "cisco/100/30-oracle/200/12")
+      )
+
+      val trades = tradeGeneration(NewYork, "b-123", List("c1-123", "c2-123"))(clientOrders)
+      trades.size should equal(8)
     }
   }
 }

@@ -12,6 +12,8 @@ trait RefModel {
   type Instrument = String
   type Account = String
   type NetAmount = BigDecimal
+  type Customer = String
+  type Broker = String
 
   sealed trait Market
   case object HongKong extends Market

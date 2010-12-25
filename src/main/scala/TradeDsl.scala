@@ -24,6 +24,9 @@ object TradeDsl {
   }
   yield((taxFeeIds ∘ taxFeeValues) ∘ netAmount)
 
+  // processes client orders in unstructured form and generates a list of Order objects
+  val clientOrders: List[Map[String, String]] => Seq[Order] = {cos => fromClientOrders(cos)}
+
   // executes an Order in a market on behalf of a specific broker account
   // generates a sequence of Executions
   val execute: Market => Account => Order => Seq[Execution] = {market =>
@@ -47,6 +50,10 @@ object TradeDsl {
     }
   }
 
+  val generateContractNote: Trade => Validation[String, ContractNote] = {t =>
+    makeContractNote(t)
+  }
+
   def tradeGeneration(m: Market, b: Account, c: List[Account]) =
-    kleisli(execute(m)(b)) >=> kleisli(allocate(c))
+    kleisli(clientOrders) >=> kleisli(execute(m)(b)) >=> kleisli(allocate(c))
 }
