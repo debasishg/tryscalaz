@@ -54,6 +54,6 @@ object TradeDsl {
     makeContractNote(t)
   }
 
-  def tradeGeneration(m: Market, b: Account, c: List[Account]) =
-    kleisli(clientOrders) >=> kleisli(execute(m)(b)) >=> kleisli(allocate(c))
+  def tradeGeneration(market: Market, broker: Account, clientAccounts: List[Account]) =
+    kleisli(clientOrders) >=> kleisli(execute(market)(broker)) >=> kleisli(allocate(clientAccounts))
 }

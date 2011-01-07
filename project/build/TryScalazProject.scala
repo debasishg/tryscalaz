@@ -4,13 +4,12 @@ class TryScalazProject(info: ProjectInfo) extends DefaultProject(info)
 {
   val scalaToolsSnapshots = "Scala-Tools Maven2 Snapshots Repository" at "http://scala-tools.org/repo-snapshots"
   val scalaToolsReleases = "Scala-Tools Maven2 Releases Repository" at "http://scala-tools.org/repo-releases"
-  val scalaz = "com.googlecode.scalaz" % "scalaz-core_2.8.0" % "5.0" % "compile"
+  val embeddedRepo       = "Embedded Repo" at (info.projectPath / "embedded-repo").asURL.toString
 
-  val scalatest =
-    buildScalaVersion match {
-      case "2.8.0" =>
-        "org.scalatest" % "scalatest" % "1.2" % "test"
-    }
+  // val scalaz = "com.googlecode.scalaz" % "scalaz-core_2.8.0" % "5.0" % "compile"
+  val scalaz = "scalaz" % "scalaz-core_2.8.1" % "5.1-SNAPSHOT" % "compile"
+
+  val scalatest = "org.scalatest" % "scalatest" % "1.2" % "test"
 
   val junit = "junit" % "junit" % "4.8.1"
 

@@ -47,23 +47,15 @@ trait TradeModel {this: RefModel =>
 
   // validate quantity
   def validQuantity(qty: BigDecimal): Validation[String, BigDecimal] =
-    try {
-      if (qty <= 0) "qty must be > 0".fail
-      else if (qty > 500) "qty must be <= 500".fail
-      else qty.success
-    } catch {
-      case e => e.toString.fail
-    }
+    if (qty <= 0) "qty must be > 0".fail
+    else if (qty > 500) "qty must be <= 500".fail
+    else qty.success
 
   // validate unit price
   def validUnitPrice(price: BigDecimal): Validation[String, BigDecimal] =
-    try {
-      if (price <= 0) "price must be > 0".fail
-      else if (price > 100) "price must be <= 100".fail
-      else price.success
-    } catch {
-      case e => e.toString.fail
-    }
+    if (price <= 0) "price must be > 0".fail
+    else if (price > 100) "price must be <= 100".fail
+    else price.success
 
   // using Validation as an applicative
   // can be combined to accumulate exceptions

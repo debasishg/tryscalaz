@@ -53,4 +53,22 @@ class TradeDslSpec extends Spec with ShouldMatchers {
       trades.size should equal(8)
     }
   }
+
+  describe("order-execute-allocate and enrich in pipeline") {
+    it("should execute in pipeline") {
+      import TradeModel._
+      import TradeDsl._
+
+      val clientOrders = List(
+        Map("no" -> "o-123", "customer" -> "chase", "instrument" -> "goog/100/30-ibm/200/12"),
+        Map("no" -> "o-124", "customer" -> "nomura", "instrument" -> "cisco/100/30-oracle/200/12")
+      )
+
+      val trades = tradeGeneration(NewYork, "b-123", List("c1-123", "c2-123"))(clientOrders)
+      (trades.sequence[({type λ[α]=Validation[NonEmptyList[String],α]})#λ, Trade] ∘∘ enrich) match {
+        case Success(l) => l.size should equal(8)
+        case _ => fail("should get a list of size 8")
+      }
+    }
+  }
 }
