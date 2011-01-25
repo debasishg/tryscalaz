@@ -55,5 +55,6 @@ object TradeDsl {
   }
 
   def tradeGeneration(market: Market, broker: Account, clientAccounts: List[Account]) =
+    // client orders           executed at market by broker        & allocated to client accounts
     kleisli(clientOrders) >=> kleisli(execute(market)(broker)) >=> kleisli(allocate(clientAccounts))
 }

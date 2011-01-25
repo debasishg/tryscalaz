@@ -71,4 +71,13 @@ class TradeDslSpec extends Spec with ShouldMatchers {
       }
     }
   }
+
+  describe("trade lens composition") {
+    it("should compose") {
+      import TradeModel._
+      import TradeDsl._
+
+      val trd1 = makeTrade("a-123", "google", "r-123", HongKong, 12.25, 200)
+    }
+  }
 }
