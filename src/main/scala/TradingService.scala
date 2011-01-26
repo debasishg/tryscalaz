@@ -43,12 +43,12 @@ object TradingService {
       eventProcessor ! ValueDateAdded(trade, addValueDate)
     }
 
+  type TradeEvent = (Trade => Trade)
   case class TradeEnriched(trade: Trade, closure: TradeEvent)
   case class ValueDateAdded(trade: Trade, closure: TradeEvent)
 
   case object Snapshot
 
-  type TradeEvent = (Trade => Trade)
   class CommandStore(qryStore: ActorRef) extends Actor {
     private var events = Map.empty[Trade, List[TradeEvent]]
 

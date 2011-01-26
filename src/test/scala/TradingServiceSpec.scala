@@ -39,7 +39,7 @@ class TradingServiceSpec extends Spec with ShouldMatchers {
       val t2 = doEnrichTrade(doAddValueDate(trd1))
       val t4 = doEnrichTrade(doAddValueDate(trd2))
 
-      val es = (cs !! Snapshot).as[Set[Trade]].getOrElse(throw new Exception("cannot get trades"))
+      val es = (cs !! Snapshot).as[Set[Trade]].getOrElse(throw new Exception("cannot get trades from command store"))
       es.size should equal(2)
       es.toList should equal(List(t2, t4))
       es.foreach{ trade => // for each trade value date - trade date should be 3
@@ -53,7 +53,7 @@ class TradingServiceSpec extends Spec with ShouldMatchers {
       }
 
       val ts = (qs !! QuerySnapshot).as[List[Trade]].getOrElse(throw new Exception("cannot get trades from query store"))
-      ts.foreach(println)
+      ts should equal(es.toList)
     }
   }
 }
