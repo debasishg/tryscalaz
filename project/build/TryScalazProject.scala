@@ -7,7 +7,13 @@ class TryScalazProject(info: ProjectInfo) extends DefaultProject(info) with Akka
 
   val scalazDep = "org.scalaz" %% "scalaz-core" % "6.0-SNAPSHOT"
 
-  val scalatest = "org.scalatest" % "scalatest" % "1.2" % "test"
+  val scalatest =
+    buildScalaVersion match {
+      case "2.9.0.RC1" =>
+        "org.scalatest" % "scalatest" % "1.4-SNAPSHOT" % "test"
+      case _ =>
+        "org.scalatest" % "scalatest" % "1.2" % "test"
+    }
 
   val junit = "junit" % "junit" % "4.8.1"
 

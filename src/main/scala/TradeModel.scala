@@ -29,6 +29,7 @@ trait TradeModel {this: RefModel =>
   case object TradeTax extends TaxFeeId
   case object Commission extends TaxFeeId
   case object VAT extends TaxFeeId
+  case object Surcharge extends TaxFeeId
 
   // rates of tax/fees expressed as fractions of the principal of the trade
   val rates: Map[TaxFeeId, BigDecimal] = Map(TradeTax -> 0.2, Commission -> 0.15, VAT -> 0.1)
