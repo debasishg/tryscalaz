@@ -45,14 +45,4 @@ object Iteratees {
 
     lines_acc(List.empty[String])
   }
-
-
-  def deduplicate[T](l: List[T]): List[T] = {
-    def deduplicate_acc[T](l: List[T], acc: List[T]): List[T] = l match {
-      case x :: xs if acc contains x => deduplicate_acc(xs, acc)
-      case x :: xs => deduplicate_acc(xs, acc :+ x)
-      case Nil => acc
-    }
-    deduplicate_acc(l, List.empty[T])
-  }
 }

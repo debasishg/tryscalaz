@@ -5,17 +5,11 @@ class TryScalazProject(info: ProjectInfo) extends DefaultProject(info) with Akka
   val scalaToolsSnapshots = "Scala-Tools Maven2 Snapshots Repository" at "http://scala-tools.org/repo-snapshots"
   val scalaToolsReleases = "Scala-Tools Maven2 Releases Repository" at "http://scala-tools.org/repo-releases"
 
-  val scalazDep = "org.scalaz" %% "scalaz-core" % "6.0-SNAPSHOT"
+  val scalazDep = "org.scalaz" % "scalaz-core_2.9.0-1" % "6.0.1"
 
-  val scalatest =
-    buildScalaVersion match {
-      case "2.9.0.RC1" =>
-        "org.scalatest" % "scalatest" % "1.4-SNAPSHOT" % "test"
-      case _ =>
-        "org.scalatest" % "scalatest" % "1.2" % "test"
-    }
+  val scalatest = "org.scalatest" % "scalatest_2.9.0" % "1.6.1" % "test"
 
-  val junit = "junit" % "junit" % "4.8.1"
+  val junit = "junit" % "junit" % "4.8.1" % "test"
 
   override def packageSrcJar = defaultJarPath("-sources.jar")
   lazy val sourceArtifact = Artifact.sources(artifactID)

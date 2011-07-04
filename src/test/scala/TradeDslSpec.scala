@@ -72,12 +72,56 @@ class TradeDslSpec extends Spec with ShouldMatchers {
     }
   }
 
+  import java.util.{Date, Calendar}
+  def addDays(dt: Date, no: Int) = {
+    val c = Calendar.getInstance
+    c.setTime(dt)
+    c.add(Calendar.DATE, no)
+    c.getTime
+  }
+
   describe("trade lens composition") {
     it("should compose") {
       import TradeModel._
       import TradeDsl._
 
-      val trd1 = makeTrade("a-123", "google", "r-123", HongKong, 12.25, 200)
+      val trd1 = Trade("a-123", "google", "r-123", HongKong, 12.25, 200)
+      val trd2 = Trade("a-125", "ibm", "r-125", Tokyo, 22.25, 250)
+      val trd3 = Trade("a-126", "cisco", "r-126", NewYork, 20, 200)
+
+      val valueDate = Calendar.getInstance.getTime
+
+      // map across the list functor 
+      val ts = Seq(trd1, trd2, trd3) ∘ (valueDateLens.set(_, Some(valueDate))) 
+      println(ts)
+
+      // map across the list functor 
+      val valueDates = ts ∘ (_.valueDate)
+
+      val now = Calendar.getInstance.getTime
+      val valueDateProcessor: Trade => Trade = {t =>
+        valueDateLens.set(t, 
+          t.valueDate map (addDays(_, 3)) orElse Some(addDays(now, 3)))
+      }
+      
+      val taxFeeProcessor: Trade => Trade = {t =>
+        // taxFeeLens.set(trade, taxes(trade))
+        t
+      }
+
+      val netAmountProcessor: Trade => Trade = {t =>
+        netAmountLens.set(t, t.taxFees.map(_.foldl(principal(t))((a, b) => a + b._2)))
+      }
+
+      // map across the Function1 functor 
+      // val trade = (valueDateProcessor ∘ taxFeeProcessor ∘ netAmountProcessor) apply trd1 
+      // println(trade)
+
+      // map across an option functor
+      val t = some(trd1) ∘ valueDateProcessor
+      println(t)
+
+      
     }
   }
 }

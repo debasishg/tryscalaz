@@ -71,11 +71,4 @@ class IterateesSpec extends Spec with ShouldMatchers {
       read_lines(Stream('a', 'b', 'c', 'd', '\r', '\n', 'e', 'f', '\r', '\n')).run should equal(Left(List("abcd", "ef")))
     }
   }
-
-  describe("nub") {
-    import Iteratees._
-    it("should remove duplicates") {
-      deduplicate(List(1,2,2,3,4,5,1,4,6,8,3)) should equal(List(1,2,3,4,5,6,8))
-    }
-  }
 }

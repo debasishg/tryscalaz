@@ -20,8 +20,8 @@ trait TradeModel {this: RefModel =>
     unitPrice: BigDecimal, quantity: BigDecimal, tradeDate: Date = Calendar.getInstance.getTime, 
     valueDate: Option[Date] = None, taxFees: Option[List[(TaxFeeId, BigDecimal)]] = None, 
     netAmount: Option[BigDecimal] = None) {
-    override def equals(that: Any) = refNo == that.asInstanceOf[Trade].refNo
-    override def hashCode = refNo.hashCode
+    // override def equals(that: Any) = refNo == that.asInstanceOf[Trade].refNo
+    // override def hashCode = refNo.hashCode
   }
 
   // various tax/fees to be paid when u do a trade
@@ -119,6 +119,7 @@ trait TradeModel {this: RefModel =>
     c.add(Calendar.DAY_OF_MONTH, 3)
     valueDateLens.set(trade, Some(c.getTime))
   }
+
 }
 
 object TradeModel extends TradeModel with ExecutionModel with OrderModel with RefModel with ContractNoteModel

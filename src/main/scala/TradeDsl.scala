@@ -1,12 +1,5 @@
 package net.debasishg.domain.trade.dsl
 
-/**
- * Created by IntelliJ IDEA.
- * User: debasish
- * Date: 24/12/10
- * Time: 11:02 PM
- * To change this template use File | Settings | File Templates.
- */
 import scalaz._
 import Scalaz._
 
