@@ -1,4 +1,5 @@
-package net.debasishg.domain.trade.dsl
+package net.debasishg.domain.trade
+package model
 
 /**
  * Created by IntelliJ IDEA.

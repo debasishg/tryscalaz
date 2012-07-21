@@ -1,4 +1,4 @@
-package net.debasishg.domain.trade.dsl
+package net.debasishg.domain.trade.model
 
 import java.util.{Date, Calendar}
 import scalaz._
@@ -7,6 +7,7 @@ import Scalaz._
 trait OrderModel {this: RefModel =>
   case class LineItem(ins: Instrument, qty: BigDecimal, price: BigDecimal)
   case class Order(no: String, date: Date, customer: Customer, items: List[LineItem])
+  type ClientOrder = Map[String, String]
 
   implicit def BigDecimalSemigroup: Semigroup[BigDecimal] = semigroup(_ + _)
   type QtyPrice = (BigDecimal, BigDecimal)

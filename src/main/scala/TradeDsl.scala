@@ -1,11 +1,12 @@
-package net.debasishg.domain.trade.dsl
+package net.debasishg.domain.trade
+package dsl
 
 import scalaz._
 import Scalaz._
 
 object TradeDsl {
 
-  import TradeModel._
+  import model.TradeModel._
 
   // enrichment of trade
   // implementation follows problem domain model

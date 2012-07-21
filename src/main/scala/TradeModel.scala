@@ -1,4 +1,5 @@
-package net.debasishg.domain.trade.dsl
+package net.debasishg.domain.trade
+package model
 
 /**
  * Created by IntelliJ IDEA.
@@ -47,7 +48,7 @@ trait TradeModel {this: RefModel =>
   def principal(trade: Trade) = trade.unitPrice * trade.quantity
 
   // combinator to value a tax/fee for a specific trade
-  private[dsl] val valueAs: Trade => TaxFeeId => BigDecimal = {trade => {tid =>
+  private[model] val valueAs: Trade => TaxFeeId => BigDecimal = {trade => {tid =>
     ((rates get tid) map (_ * principal(trade))) getOrElse (BigDecimal(0)) }}
 
   // all tax/fees for a specific trade

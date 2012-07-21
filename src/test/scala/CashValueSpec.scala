@@ -1,4 +1,5 @@
-package net.debasishg.domain.trade.dsl
+package net.debasishg.domain.trade
+package model
 
 import org.scalatest.Spec
 import org.scalatest.matchers.ShouldMatchers

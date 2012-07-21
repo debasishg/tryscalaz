@@ -1,4 +1,5 @@
-package net.debasishg.domain.trade.dsl
+package net.debasishg.domain.trade
+package dsl
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,7 +22,7 @@ class TradeDslSpec extends Spec with ShouldMatchers {
 
   describe("trade lifecycle") {
     it("should create and operate on multiple trades") {
-      import TradeModel._
+      import model.TradeModel._
       import TradeDsl._
 
       val trd1 = makeTrade("a-123", "google", "r-123", HongKong, 12.25, 200)
@@ -41,7 +42,7 @@ class TradeDslSpec extends Spec with ShouldMatchers {
 
   describe("order-execute-allocate") {
     it("should execute in pipeline") {
-      import TradeModel._
+      import model.TradeModel._
       import TradeDsl._
 
       val clientOrders = List(
@@ -56,7 +57,7 @@ class TradeDslSpec extends Spec with ShouldMatchers {
 
   describe("order-execute-allocate and enrich in pipeline") {
     it("should execute in pipeline") {
-      import TradeModel._
+      import model.TradeModel._
       import TradeDsl._
 
       val clientOrders = List(
@@ -82,7 +83,7 @@ class TradeDslSpec extends Spec with ShouldMatchers {
 
   describe("trade lens composition") {
     it("should compose") {
-      import TradeModel._
+      import model.TradeModel._
       import TradeDsl._
 
       val trd1 = Trade("a-123", "google", "r-123", HongKong, 12.25, 200)
